@@ -11,7 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.secret_key = 'secret_key'
-
 db = SQLAlchemy(app)
 
 # Modèle Utilisateur
@@ -21,7 +20,6 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     articles = db.relationship('Article', backref='author', lazy=True)
-
     def __init__(self, email, password, name):
         self.name = name
         self.email = email
@@ -39,7 +37,9 @@ class Article(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+
 # Fonctions utilitaires
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -97,9 +97,6 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         return redirect('/login')
-
-
-
     return render_template('register.html')
 
 @app.route('/dashboard')
