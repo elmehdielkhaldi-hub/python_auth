@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden mt-10">
+    {% if article.image_filename %}
+    <div class="w-full h-96 overflow-hidden">
+        <img src="{{ url_for('uploaded_file', filename=article.image_filename) }}" 
+             alt="{{ article.title }}" 
+             class="w-full h-full object-cover">
+    </div>
+    {% endif %}
+    
+    <div class="p-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ article.title }}</h1>
+        <div class="prose max-w-none">
+            {{ article.content }}
+        </div>
+        <div class="mt-8 pt-4 border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                Publié par {{ article.author.name }} le 
+                {{ article.created_at.strftime('%d/%m/%Y à %H:%M') }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
